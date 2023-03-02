@@ -12,6 +12,10 @@ app.post("/", (req, res) => {
   myOpenAi.generateResponse(req, res);
 });
 
+app.post("/upload-training-data", (req, res) => {
+  myOpenAi.uploadTrainingData(req, res);
+});
+
 app.get("/", (req, res) => {
   res.send("Hello world");
 });

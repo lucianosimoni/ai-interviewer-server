@@ -8,6 +8,8 @@
 npm install
 ```
 
+`Create the .env file.
+
 ```bash
 npm start # Starts the Local Server at port 3000
 ```
