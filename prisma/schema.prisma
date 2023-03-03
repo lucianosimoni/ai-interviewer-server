@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model user {
+  id            Int      @id @default(autoincrement())
+  email         String
+  password_hash String
+  Profile       profile?
+}
+
+model profile {
+  id      Int  @id @default(autoincrement())
+  user    user @relation(fields: [user_id], references: [id])
+  user_id Int  @unique
+}
+
+model interview {
+  id              Int              @id @default(autoincrement())
+  current_round   Int
+  max_round       Int
+  inverview_stats inverview_stats?
+}
+
+model inverview_stats {
+  id              Int       @id @default(autoincrement())
+  interview       interview @relation(fields: [inverview_id], references: [id])
+  inverview_id    Int       @unique
+  good            Boolean
+  silence_seconds Int
+}
