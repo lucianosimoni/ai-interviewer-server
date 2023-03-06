@@ -1,5 +1,4 @@
 require("dotenv").config();
-const fs = require("fs");
 const openai = require("openai");
 const { Configuration, OpenAIApi } = openai;
 
@@ -52,43 +51,6 @@ function generatePrompt(message) {
 
   // FIXME: Remove this! Model will be trained so this is not required
   return capitalizedMessage;
-}
-
-async function uploadTrainingData(req, res) {
-  const password = req.body.password;
-  if (password !== process.env.ADMIN_PASSWORD) {
-    res.status(401).json({
-      error: "Incorrect request password.",
-    });
-    return;
-  }
-
-  if (!fs.existsSync("training-data.jsonl")) {
-    res.status(404).json({
-      error: "training data does not exist in Server!",
-    });
-    return;
-  }
-
-  try {
-    const response = await ai.createFile(
-      fs.createReadStream("training-data.jsonl"),
-      "fine-tune"
-    );
-    res.status(200).json({ result: response });
-  } catch (error) {
-    if (error.response) {
-      console.error(error.response.status, error.response.data);
-      res.status(error.response.status).json(error.response.data);
-    } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
-      res.status(500).json({
-        error: {
-          message: "An error occurred during your request.",
-        },
-      });
-    }
-  }
 }
 
 module.exports = { generateResponse, generatePrompt, uploadTrainingData };
