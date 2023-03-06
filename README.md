@@ -12,7 +12,7 @@ _Install the dependencies_
 
 _Create the **.env** file_
 
-```json
+```env
 OPENAI_API_KEY="YOUR-API-KEY-HERE"
 ADMIN_PASSWORD="REPLACE"
 DATABASE_URL="REPLACE?schema=prisma"
