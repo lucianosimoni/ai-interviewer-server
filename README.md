@@ -17,6 +17,7 @@ OPENAI_API_KEY="YOUR-API-KEY-HERE"
 ADMIN_PASSWORD="REPLACE"
 DATABASE_URL="REPLACE?schema=prisma"
 SHADOW_DATABASE_URL="REPLACE?schema=shadow"
+FINE_TUNNED_MODEL="REPLACE"
 ```
 
 _Start the application locally_
@@ -62,7 +63,8 @@ npx prisma migrate dev --create-only
 
 ## 🧠 OpenAI
 
-- Base model in use: `gpt-3.5-turbo` / `turbo`
+- Base model in use: `curie`
+- Fine-tunned model with more than 150+ lines of data.
 
 ### Fine-tuning model
 
@@ -77,7 +79,7 @@ Check docts [here](https://platform.openai.com/docs/guides/fine-tuning/create-a-
 2. _Fine-tune a new model_
 
 ```bash
-openai api fine_tunes.create -t <TRAIN_FILE_ID_OR_PATH> -m <BASE_MODEL> --suffix "custom model name"
+openai -k <API_KEY> api fine_tunes.create -t <TRAIN_FILE_ID_OR_PATH> -m <BASE_MODEL> --suffix "custom model name"
 ```
 
 ## Do you have recommendations to me? just send me a message 😁

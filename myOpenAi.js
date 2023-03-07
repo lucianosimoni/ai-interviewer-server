@@ -22,14 +22,16 @@ async function generateResponse(req, res) {
 
   try {
     const completion = await ai.createCompletion({
-      model: "text-davinci-003",
+      model: process.env.FINE_TUNNED_MODEL,
       prompt: generatePrompt(message),
-      temperature: 0.6,
+      temperature: 0.8,
+      max_tokens: 80,
       frequency_penalty: 1,
       presence_penalty: 1,
       stop: ["\n"],
     });
-    res.status(200).json({ result: completion.data.choices[0].text });
+
+    handleResponse(completion.data.choices[0].text, res);
   } catch (error) {
     if (error.response) {
       console.error(error.response.status, error.response.data);
@@ -46,11 +48,25 @@ async function generateResponse(req, res) {
 }
 
 function generatePrompt(message) {
-  const capitalizedMessage =
-    message[0].toUpperCase() + message.slice(1).toLowerCase();
-
-  // FIXME: Remove this! Model will be trained so this is not required
-  return capitalizedMessage;
+  const formattedMessage = message.trim() + "->";
+  return formattedMessage;
 }
 
-module.exports = { generateResponse, generatePrompt, uploadTrainingData };
+function handleResponse(aiResponse, res) {
+  // 🔴 Response is to End interview.
+  if (aiResponse.endsWith("<end-interview>")) {
+    // Removes tag from end of response.
+    aiResponse = aiResponse.slice(0, -15);
+
+    res.status(200).json({
+      result: aiResponse,
+      status: "over",
+    });
+    return;
+  }
+
+  // 🟢 Response is Ok
+  res.status(200).json({ result: aiResponse, status: "ok" });
+}
+
+module.exports = { generateResponse, generatePrompt };

@@ -1,6 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
-const { generateResponse, uploadTrainingData } = require("./myOpenAi.js");
+const { generateResponse } = require("./myOpenAi.js");
 const { PrismaClient } = require("@prisma/client");
 
 const app = express();
@@ -12,10 +12,6 @@ const prisma = new PrismaClient();
 
 app.post("/", (req, res) => {
   generateResponse(req, res);
-});
-
-app.post("/upload-training-data", (req, res) => {
-  uploadTrainingData(req, res);
 });
 
 app.get("/", (req, res) => {
