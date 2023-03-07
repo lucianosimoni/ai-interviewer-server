@@ -27,7 +27,9 @@ async function createNewUser(req, res) {
     .catch((error) => {
       // Email not unique
       if (error.code === "P2002") {
-        res.status(404).json({ error: { message: "E-mail already in use." } });
+        res
+          .status(409)
+          .json({ error: { message: "E-mail already in use.", code: 001 } });
       } else {
         res.status(error.status).json({ error: { message: error.message } });
       }

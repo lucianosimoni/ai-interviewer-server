@@ -15,6 +15,7 @@ model User {
   id           Int         @id @default(autoincrement())
   email        String      @unique
   passwordHash String
+  role         String      @default("USER")
   Profile      Profile?
   Interview    Interview[] // A user can have many Interviews
 }
