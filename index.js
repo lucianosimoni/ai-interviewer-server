@@ -5,8 +5,15 @@ const { createNewUser } = require("./database.js");
 
 const app = express();
 const port = 3000;
-app.use(morgan("dev"));
+app.use(morgan("short"));
 app.use(express.json());
+
+// Basic back-end preview
+app.get("/", (req, res) => {
+  res.send(
+    "<h1>Hello there! 🧙‍♂️</h1><a target='_blank' href='https://github.com/lucianosimoni/ai-interviewer-server'>GitHub</a><br/><a target='_blank' href='https://www.linkedin.com/in/luciano-simoni/'>LinkedIn</a>"
+  );
+});
 
 app.post("/", (req, res) => {
   generateResponse(req, res);

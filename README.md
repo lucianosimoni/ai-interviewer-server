@@ -1,5 +1,11 @@
 # Server - AI Interviewer
 
+Hosted using [render](https://render.com/).
+
+Live endpoint:
+
+https://ai-interviewer.onrender.com
+
 🧙‍♂️
 
 ## 🚂 Run it locally
@@ -14,7 +20,6 @@ _Create the **.env** file_
 
 ```env
 OPENAI_API_KEY="YOUR-API-KEY-HERE"
-ADMIN_PASSWORD="REPLACE"
 DATABASE_URL="REPLACE?schema=prisma"
 SHADOW_DATABASE_URL="REPLACE?schema=shadow"
 FINE_TUNNED_MODEL="REPLACE"
