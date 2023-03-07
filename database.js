@@ -4,6 +4,14 @@ const prisma = new PrismaClient();
 async function createNewUser(req, res) {
   const { email, passwordHash, firstName, lastName } = req.body;
 
+  // Check for Missing fields
+  if (!email || !passwordHash || !firstName || !lastName) {
+    res.status(400).json({
+      error: { message: "Request body is missing arguments", code: 2 },
+    });
+    return;
+  }
+
   await prisma.user
     .create({
       data: {
@@ -29,7 +37,7 @@ async function createNewUser(req, res) {
       if (error.code === "P2002") {
         res
           .status(409)
-          .json({ error: { message: "E-mail already in use.", code: 001 } });
+          .json({ error: { message: "E-mail already in use.", code: 1 } });
       } else {
         res.status(error.status).json({ error: { message: error.message } });
       }
