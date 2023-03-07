@@ -10,13 +10,15 @@ const ai = new OpenAIApi(configuration);
 
 async function generateResponse(req, res) {
   if (!configuration.apiKey) {
-    res.status(404).json({ error: "OpenAI API key not configured." });
+    res
+      .status(404)
+      .json({ error: { message: "OpenAI API key not configured." } });
     return;
   }
 
   const message = req.body.message;
   if (message.trim().length === 0) {
-    res.status(404).json({ error: "Message is empty." });
+    res.status(404).json({ error: { message: "Message is empty." } });
     return;
   }
 

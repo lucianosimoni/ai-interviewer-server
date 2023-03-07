@@ -4,20 +4,35 @@ const prisma = new PrismaClient();
 async function createNewUser(req, res) {
   const { email, passwordHash, firstName, lastName } = req.body;
 
-  const newUser = await prisma.user.create({
-    data: {
-      email: email,
-      passwordHash: passwordHash,
-      Profile: {
-        create: {
-          firstName: firstName,
-          lastName: lastName,
+  await prisma.user
+    .create({
+      data: {
+        email: email,
+        passwordHash: passwordHash,
+        Profile: {
+          create: {
+            firstName: firstName,
+            lastName: lastName,
+          },
         },
       },
-    },
-  });
-
-  res.status(201).json({ user: newUser });
+      include: {
+        Profile: true,
+      },
+    })
+    .then((createdUser) => {
+      delete createdUser.passwordHash;
+      res.status(201).json({ user: createdUser });
+    })
+    .catch((error) => {
+      // Email not unique
+      if (error.code === "P2002") {
+        res.status(404).json({ error: { message: "E-mail already in use." } });
+      } else {
+        res.status(error.status).json({ error: { message: error.message } });
+      }
+      return;
+    });
 }
 
 module.exports = { createNewUser };
