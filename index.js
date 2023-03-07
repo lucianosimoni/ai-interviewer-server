@@ -1,21 +1,19 @@
 const express = require("express");
 const morgan = require("morgan");
 const { generateResponse } = require("./myOpenAi.js");
-const { PrismaClient } = require("@prisma/client");
+const { createNewUser } = require("./database.js");
 
 const app = express();
 const port = 3000;
 app.use(morgan("dev"));
 app.use(express.json());
 
-const prisma = new PrismaClient();
-
 app.post("/", (req, res) => {
   generateResponse(req, res);
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello world");
+app.post("/user", (req, res) => {
+  createNewUser(req, res);
 });
 
 app.listen(port, () => {

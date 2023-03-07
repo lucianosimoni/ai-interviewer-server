@@ -42,6 +42,12 @@ _Creates it locally but **do not apply** to database_
 npx prisma migrate dev --create-only
 ```
 
+_Reset database_
+
+```bash
+npx prisma migrate reset
+```
+
 ---
 
 ## 📦 Dependencies
