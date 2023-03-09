@@ -60,6 +60,7 @@ npx prisma migrate reset
 ```json
 "dependencies": {
   "@prisma/client": "^4.11.0",
+  "cors": "^2.8.5",
   "dotenv": "^16.0.3",
   "express": "^4.18.2",
   "openai": "^3.1.0"
