@@ -70,7 +70,7 @@ async function createNewInterview(req, res) {
         },
       },
       include: {
-        interviewStats,
+        interviewStats: true,
       },
     })
     .then((createdInterview) => {
