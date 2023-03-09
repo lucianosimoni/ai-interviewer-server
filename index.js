@@ -2,7 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const { generateResponse } = require("./myOpenAi.js");
-const { createNewUser } = require("./database.js");
+const { createNewUser, createNewInterview } = require("./database.js");
 
 const app = express();
 const port = 3000;
@@ -24,6 +24,11 @@ app.post("/", (req, res) => {
 
 app.post("/user", (req, res) => {
   createNewUser(req, res);
+});
+
+// INTERVIEWS
+app.post("/user/:userId/interview", (req, res) => {
+  createNewInterview(req, res);
 });
 
 app.listen(port, () => {

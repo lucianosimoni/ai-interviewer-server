@@ -45,4 +45,6 @@ async function createNewUser(req, res) {
     });
 }
 
-module.exports = { createNewUser };
+async function createNewInterview(req, res) {}
+
+module.exports = { createNewUser, createNewInterview };

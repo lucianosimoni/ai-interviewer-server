@@ -32,8 +32,10 @@ model Interview {
   id             Int             @id @default(autoincrement())
   user           User            @relation(fields: [userId], references: [id]) // An Interview can have only one User
   userId         Int
-  currentRound   Int
+  currentRound   Int             @default(0)
   maxRound       Int
+  level          String          @default("Junior")
+  createdAt      DateTime        @default(now())
   inverviewStats InverviewStats?
 }
 
