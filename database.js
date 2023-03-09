@@ -39,12 +39,46 @@ async function createNewUser(req, res) {
           .status(409)
           .json({ error: { message: "E-mail already in use.", code: 1 } });
       } else {
-        res.status(error.status).json({ error: { message: error.message } });
+        res.status(500).json({ error: { message: error.message } });
       }
       return;
     });
 }
 
-async function createNewInterview(req, res) {}
+async function createNewInterview(req, res) {
+  const { userId, maxRound, level } = req.body;
+
+  if (!userId || !maxRound || !level) {
+    res.status(400).json({
+      error: { message: "Request body is missing arguments", code: 2 },
+    });
+    return;
+  }
+
+  await prisma.interview
+    .create({
+      data: {
+        maxRound: maxRound,
+        level: level,
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        interviewStats: {
+          create: {},
+        },
+      },
+      include: {
+        interviewStats,
+      },
+    })
+    .then((createdInterview) => {
+      res.status(201).json({ interview: createdInterview });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: { message: error.message } });
+    });
+}
 
 module.exports = { createNewUser, createNewInterview };

@@ -27,7 +27,7 @@ app.post("/user", (req, res) => {
 });
 
 // INTERVIEWS
-app.post("/user/:userId/interview", (req, res) => {
+app.post("/user/interview", (req, res) => {
   createNewInterview(req, res);
 });
 
