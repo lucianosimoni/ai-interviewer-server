@@ -34,7 +34,7 @@ app.post("/user", (req, res) => {
 app.get("/user/:userId/interview", (req, res) => {
   getAllUserInterviews(req, res);
 });
-app.post("/user/interview", (req, res) => {
+app.post("/user/:userId/interview", (req, res) => {
   createNewInterview(req, res);
 });
 

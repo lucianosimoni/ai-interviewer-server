@@ -68,7 +68,8 @@ async function getAllUserInterviews(req, res) {
 }
 
 async function createNewInterview(req, res) {
-  const { userId, maxRound, level } = req.body;
+  const { userId } = req.params;
+  const { maxRound, level } = req.body;
 
   if (!userId || !maxRound || !level) {
     res.status(400).json({
@@ -84,7 +85,7 @@ async function createNewInterview(req, res) {
         level: level,
         user: {
           connect: {
-            id: userId,
+            id: Number(userId),
           },
         },
         interviewStats: {
