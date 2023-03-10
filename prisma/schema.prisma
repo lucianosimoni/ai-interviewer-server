@@ -38,6 +38,7 @@ model Interview {
   createdAt        DateTime           @default(now())
   interviewStats   InterviewStats?
   InterviewMessage InterviewMessage[]
+  InterviewSummary InterviewSummary[]
 }
 
 model InterviewStats {
@@ -49,10 +50,21 @@ model InterviewStats {
 }
 
 model InterviewMessage {
-  id          Int       @id @default(autoincrement())
-  interview   Interview @relation(fields: [interviewId], references: [id])
+  id          Int               @id @default(autoincrement())
+  interview   Interview         @relation(fields: [interviewId], references: [id])
   interviewId Int
+  summary     InterviewSummary? @relation(fields: [summaryId], references: [id])
+  summaryId   Int?
   message     String
   author      String
-  createdAt   DateTime  @default(now())
+  createdAt   DateTime          @default(now())
+}
+
+model InterviewSummary {
+  id               Int                @id @default(autoincrement())
+  interview        Interview          @relation(fields: [interviewId], references: [id])
+  interviewId      Int
+  summary          String
+  createdAt        DateTime           @default(now())
+  InterviewMessage InterviewMessage[]
 }
