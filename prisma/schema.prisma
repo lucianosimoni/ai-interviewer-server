@@ -29,14 +29,15 @@ model Profile {
 }
 
 model Interview {
-  id             Int             @id @default(autoincrement())
-  user           User            @relation(fields: [userId], references: [id]) // An Interview can have only one User
-  userId         Int
-  currentRound   Int             @default(0)
-  maxRound       Int
-  level          String          @default("Junior")
-  createdAt      DateTime        @default(now())
-  interviewStats InterviewStats?
+  id               Int                @id @default(autoincrement())
+  user             User               @relation(fields: [userId], references: [id]) // An Interview can have only one User
+  userId           Int
+  currentRound     Int                @default(0)
+  maxRound         Int
+  level            String             @default("Junior")
+  createdAt        DateTime           @default(now())
+  interviewStats   InterviewStats?
+  InterviewMessage InterviewMessage[]
 }
 
 model InterviewStats {
@@ -45,4 +46,13 @@ model InterviewStats {
   interviewId    Int       @unique
   good           Boolean?
   silenceSeconds Int?
+}
+
+model InterviewMessage {
+  id          Int       @id @default(autoincrement())
+  interview   Interview @relation(fields: [interviewId], references: [id])
+  interviewId Int
+  message     String
+  author      String
+  createdAt   DateTime  @default(now())
 }
