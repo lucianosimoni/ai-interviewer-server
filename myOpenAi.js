@@ -18,7 +18,7 @@ async function generateResponse(req, res) {
 
   const message = req.body.message;
   if (message.trim().length === 0) {
-    res.status(404).json({ error: { message: "Message is empty." } });
+    res.status(400).json({ error: { message: "Message is empty." } });
     return;
   }
 
