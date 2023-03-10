@@ -104,6 +104,7 @@ async function createNewInterview(req, res) {
     });
 }
 
+// TODO: Check if message exists before connection
 // MESSAGES
 async function createNewMessage(req, res) {
   const { userId, interviewId } = req.params;

@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
   );
 });
 
-app.post("/", (req, res) => {
+app.post("/openai", (req, res) => {
   generateResponse(req, res);
 });
 
