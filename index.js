@@ -9,6 +9,7 @@ const {
   createNewMessage,
   createNewSummary,
   updateMessageSummaryId,
+  getAllInterviewMessages,
 } = require("./database.js");
 
 const app = express();
@@ -42,6 +43,9 @@ app.post("/user/:userId/interview", (req, res) => {
 });
 
 // MESSAGES
+app.get("/user/:userId/interview/:interviewId/message", (req, res) => {
+  getAllInterviewMessages(req, res);
+});
 app.post("/user/:userId/interview/:interviewId/message", (req, res) => {
   createNewMessage(req, res);
 });

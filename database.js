@@ -106,6 +106,32 @@ async function createNewInterview(req, res) {
 
 // TODO: Check if message exists before connection
 // MESSAGES
+async function getAllInterviewMessages(req, res) {
+  const { userId, interviewId } = req.params;
+
+  if (!userId || !interviewId) {
+    res.status(400).json({
+      error: { message: "Request body is missing arguments", code: 2 },
+    });
+    return;
+  }
+
+  await prisma.interviewMessage
+    .findMany({
+      where: {
+        interviewId: {
+          equals: Number(interviewId),
+        },
+      },
+    })
+    .then((returnedMessages) => {
+      res.status(201).json({ messages: returnedMessages });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: { message: error.message } });
+    });
+}
+
 async function createNewMessage(req, res) {
   const { userId, interviewId } = req.params;
   const { message, author } = req.body;
@@ -136,6 +162,7 @@ async function createNewMessage(req, res) {
       res.status(500).json({ error: { message: error.message } });
     });
 }
+
 async function updateMessageSummaryId(req, res) {
   const { userId, interviewId, messageId } = req.params;
   const { summaryId } = req.body;
@@ -202,4 +229,5 @@ module.exports = {
   createNewMessage,
   createNewSummary,
   updateMessageSummaryId,
+  getAllInterviewMessages,
 };
