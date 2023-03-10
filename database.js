@@ -135,6 +135,33 @@ async function createNewMessage(req, res) {
       res.status(500).json({ error: { message: error.message } });
     });
 }
+async function updateMessageSummaryId(req, res) {
+  const { userId, interviewId, messageId } = req.params;
+  const { summaryId } = req.body;
+
+  if (!userId || !interviewId || !messageId || !summaryId) {
+    res.status(400).json({
+      error: { message: "Request body is missing arguments", code: 2 },
+    });
+    return;
+  }
+
+  await prisma.interviewMessage
+    .update({
+      where: {
+        id: Number(messageId),
+      },
+      data: {
+        summaryId: summaryId,
+      },
+    })
+    .then((updatedMessage) => {
+      res.status(201).json({ message: updatedMessage });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: { message: error.message } });
+    });
+}
 
 // SUMMARY
 async function createNewSummary(req, res) {
@@ -159,7 +186,7 @@ async function createNewSummary(req, res) {
         },
       },
     })
-    .then((createdSummary) => {
+    .then(async (createdSummary) => {
       res.status(201).json({ summary: createdSummary });
     })
     .catch((error) => {
@@ -173,4 +200,5 @@ module.exports = {
   getAllUserInterviews,
   createNewMessage,
   createNewSummary,
+  updateMessageSummaryId,
 };
