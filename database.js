@@ -136,9 +136,41 @@ async function createNewMessage(req, res) {
     });
 }
 
+// SUMMARY
+async function createNewSummary(req, res) {
+  const { userId, interviewId } = req.params;
+  const { summary, messagesId } = req.body;
+
+  if (!userId || !interviewId || !summary || !messagesId) {
+    res.status(400).json({
+      error: { message: "Request body is missing arguments", code: 2 },
+    });
+    return;
+  }
+
+  await prisma.interviewSummary
+    .create({
+      data: {
+        summary: summary,
+        interview: {
+          connect: {
+            id: Number(interviewId),
+          },
+        },
+      },
+    })
+    .then((createdSummary) => {
+      res.status(201).json({ summary: createdSummary });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: { message: error.message } });
+    });
+}
+
 module.exports = {
   createNewUser,
   createNewInterview,
   getAllUserInterviews,
   createNewMessage,
+  createNewSummary,
 };

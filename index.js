@@ -7,6 +7,7 @@ const {
   createNewInterview,
   getAllUserInterviews,
   createNewMessage,
+  createNewSummary,
 } = require("./database.js");
 
 const app = express();
@@ -42,6 +43,11 @@ app.post("/user/:userId/interview", (req, res) => {
 // MESSAGES
 app.post("/user/:userId/interview/:interviewId/message", (req, res) => {
   createNewMessage(req, res);
+});
+
+// SUMMARIES
+app.post("/user/:userId/interview/:interviewId/summary", (req, res) => {
+  createNewSummary(req, res);
 });
 
 app.listen(port, () => {
