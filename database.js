@@ -45,6 +45,28 @@ async function createNewUser(req, res) {
     });
 }
 
+async function getAllUserInterviews(req, res) {
+  const { userId } = req.params;
+
+  await prisma.interview
+    .findMany({
+      where: {
+        userId: {
+          equals: Number(userId),
+        },
+      },
+      include: {
+        interviewStats: true,
+      },
+    })
+    .then((interviews) => {
+      res.status(200).json({ interviews: interviews });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: { message: error.message } });
+    });
+}
+
 async function createNewInterview(req, res) {
   const { userId, maxRound, level } = req.body;
 
@@ -81,4 +103,4 @@ async function createNewInterview(req, res) {
     });
 }
 
-module.exports = { createNewUser, createNewInterview };
+module.exports = { createNewUser, createNewInterview, getAllUserInterviews };
