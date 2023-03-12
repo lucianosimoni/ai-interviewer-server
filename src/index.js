@@ -19,9 +19,11 @@ app.use(express.json());
 app.use(cors());
 
 const userRouter = require("./routers/user.js");
+const interviewRouter = require("./routers/interview.js");
 const openaiRouter = require("./routers/openai.js");
 
 app.use("/user", userRouter);
+app.use("/interview", interviewRouter);
 app.use("/openai", openaiRouter);
 
 // Basic back-end preview

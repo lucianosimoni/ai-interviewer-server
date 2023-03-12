@@ -1,6 +1,14 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+async function getInterviewById(interviewId) {
+  return await prisma.interview.findUnique({
+    where: {
+      id: Number(interviewId),
+    },
+  });
+}
+
 async function getInterviewsByUser(req, res) {
   const { userId } = req.params;
 
@@ -22,3 +30,8 @@ async function getInterviewsByUser(req, res) {
       res.status(500).json({ error: { message: error.message } });
     });
 }
+
+module.exports = {
+  getInterviewById,
+  getInterviewsByUser,
+};
