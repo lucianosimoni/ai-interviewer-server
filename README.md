@@ -94,4 +94,10 @@ Check docts [here](https://platform.openai.com/docs/guides/fine-tuning/create-a-
 openai -k <API_KEY> api fine_tunes.create -t <TRAIN_FILE_ID_OR_PATH> -m <BASE_MODEL> --suffix "custom model name"
 ```
 
+3. _Train already made Fine-tuned model_
+
+```bash
+openai -k <API_KEY> api fine_tunes.create -t <TRAIN_FILE_ID_OR_PATH> --model <MODEL_ID>
+```
+
 ## Do you have recommendations to me? just send me a message 😁
