@@ -1,9 +1,4 @@
-const {
-  getInterviewById,
-  getUserByEmail,
-  getAllUsers,
-  createUser,
-} = require("../models/interview");
+const { getInterviewById, getAllInterviews } = require("../models/interview");
 
 async function getById(req, res) {
   const { interviewId } = req.params;
@@ -22,9 +17,9 @@ async function getById(req, res) {
 }
 
 async function getAll(req, res) {
-  const users = await getAllUsers();
+  const interviews = await getAllInterviews();
   res.status(200).json({
-    users: users,
+    interviews: interviews,
   });
 }
 

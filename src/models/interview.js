@@ -9,6 +9,10 @@ async function getInterviewById(interviewId) {
   });
 }
 
+async function getAllInterviews() {
+  return await prisma.interview.findMany();
+}
+
 async function getInterviewsByUser(req, res) {
   const { userId } = req.params;
 
@@ -33,5 +37,6 @@ async function getInterviewsByUser(req, res) {
 
 module.exports = {
   getInterviewById,
+  getAllInterviews,
   getInterviewsByUser,
 };
