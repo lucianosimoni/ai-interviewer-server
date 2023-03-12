@@ -1,9 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const { generateResponse } = require("./myOpenAi.js");
 const {
-  createNewUser,
   createNewInterview,
   getAllUserInterviews,
   createNewMessage,
