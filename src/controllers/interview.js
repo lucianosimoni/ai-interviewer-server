@@ -1,35 +1,38 @@
-const { getInterviewById, getAllInterviews } = require("../models/interview");
+const {
+  createInterview,
+  getInterviewById,
+  getInterviewsByUser,
+  getAllInterviews,
+} = require("../models/interview");
+const { getUserById } = require("../models/user");
+const { missingBody, missingParams } = require("../utils/defaultResponses.js");
 
 async function create(req, res) {
-  const { email, passwordHash, firstName, lastName } = req.body;
-  if (!email || !passwordHash || !firstName || !lastName) {
-    res.status(400).json({
-      error: { message: "Request body is missing arguments", code: 2 },
-    });
-    return;
+  const { userId, maxRound, level } = req.body;
+  if (!userId || !maxRound || !level) {
+    return missingBody(res);
   }
 
-  const userEmailExists = await getUserByEmail(email);
-  if (userEmailExists) {
-    res.status(409).json({
-      error: { message: "Account already exists" },
-    });
-    return;
+  const returnedUser = await getUserById(Number(userId));
+  if (!returnedUser) {
+    return res
+      .status(400)
+      .json({ error: { message: `User id ${userId} does not exist.` } });
   }
 
-  const userData = {
-    email: email,
-    passwordHash: passwordHash,
-    firstName: firstName,
-    lastName: lastName,
+  const data = {
+    userId: Number(userId),
+    maxRound: Number(maxRound),
+    level,
   };
-  const user = await createUser(userData);
-  if (!user) {
-    res.status(500).json({ error: { message: "An error occurred." } });
-    return;
+  const createdInterview = await createInterview(data);
+  if (!createInterview) {
+    return res
+      .status(401)
+      .json({ error: { message: "Unable to create interview." } });
   }
 
-  return res.status(201).json({ user: user });
+  return res.status(201).json({ createdInterview: createdInterview });
 }
 
 async function getAll(req, res) {
@@ -39,12 +42,33 @@ async function getAll(req, res) {
   });
 }
 
-async function getById(req, res) {
-  const { interviewId } = req.query;
-  if (!interviewId) {
+async function getByUser(req, res) {
+  const { userId } = req.params;
+  if (!userId) {
+    return missingParams(res);
+  }
+
+  const returnedUser = await getUserById(Number(userId));
+  if (!returnedUser) {
     return res
       .status(400)
-      .json({ error: { message: "Missing query interviewId." } });
+      .json({ error: { message: `User id ${userId} does not exist.` } });
+  }
+
+  const userInterviews = await getInterviewsByUser(Number(userId));
+  if (!userInterviews) {
+    return res
+      .status(401)
+      .json({ error: { message: "Unable to get user interviews." } });
+  }
+
+  return res.status(200).json({ userInterviews: userInterviews });
+}
+
+async function getById(req, res) {
+  const { interviewId } = req.params;
+  if (!interviewId) {
+    return missingParams(res);
   }
 
   const returnedInterview = await getInterviewById(interviewId);
@@ -60,7 +84,8 @@ async function getById(req, res) {
 }
 
 module.exports = {
-  getById,
-  getAll,
   create,
+  getAll,
+  getByUser,
+  getById,
 };

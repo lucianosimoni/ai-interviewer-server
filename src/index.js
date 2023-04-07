@@ -13,8 +13,8 @@ app.use(cors());
 
 const userRouter = require("./routers/user.js");
 const interviewRouter = require("./routers/interview.js");
-const openaiRouter = require("./routers/openai.js");
 const interviewMessageRouter = require("./routers/interviewMessage.js");
+const openaiRouter = require("./routers/openai.js");
 
 app.use("/user", userRouter);
 app.use("/interview", interviewRouter);

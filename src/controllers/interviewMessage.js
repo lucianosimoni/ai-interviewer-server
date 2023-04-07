@@ -6,6 +6,7 @@ const {
 } = require("../models/interviewMessage.js");
 const { getInterviewById } = require("../models/interview.js");
 const { getSummaryById } = require("../models/interviewSummary.js");
+const { missingBody, missingQuery } = require("../utils/defaultResponses.js");
 
 async function create(req, res) {
   const { message, author, userId, interviewId } = req.body;
@@ -99,22 +100,6 @@ async function updateSummary(req, res) {
   }
 
   return res.status(201).json({ updateMessage: updatedMessage });
-}
-
-// ------------------------
-// 🧊 Reusable functions
-// ------------------------
-
-function missingBody(res) {
-  return res.status(400).json({
-    error: { message: "Request body is missing arguments." },
-  });
-}
-
-function missingQuery(res) {
-  return res.status(400).json({
-    error: { message: "URL queries are missing arguments." },
-  });
 }
 
 module.exports = {

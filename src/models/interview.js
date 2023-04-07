@@ -1,6 +1,26 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+async function createInterview({ userId, maxRound, level }) {
+  return await prisma.interview.create({
+    data: {
+      maxRound: maxRound,
+      level: level,
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+      interviewStats: {
+        create: {},
+      },
+    },
+    include: {
+      interviewStats: true,
+    },
+  });
+}
+
 async function getInterviewById(interviewId) {
   return await prisma.interview.findUnique({
     where: {
@@ -13,29 +33,21 @@ async function getAllInterviews() {
   return await prisma.interview.findMany();
 }
 
-async function getInterviewsByUser(req, res) {
-  const { userId } = req.params;
-
-  await prisma.interview
-    .findMany({
-      where: {
-        userId: {
-          equals: Number(userId),
-        },
+async function getInterviewsByUser(userId) {
+  return await prisma.interview.findMany({
+    where: {
+      user: {
+        id: userId,
       },
-      include: {
-        interviewStats: true,
-      },
-    })
-    .then((interviews) => {
-      res.status(200).json({ interviews: interviews });
-    })
-    .catch((error) => {
-      res.status(500).json({ error: { message: error.message } });
-    });
+    },
+    include: {
+      interviewStats: true,
+    },
+  });
 }
 
 module.exports = {
+  createInterview,
   getInterviewById,
   getAllInterviews,
   getInterviewsByUser,
