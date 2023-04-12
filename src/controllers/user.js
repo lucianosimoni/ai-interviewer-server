@@ -1,69 +1,76 @@
 const {
-  getUserById,
-  getUserByEmail,
-  getAllUsers,
-  createUser,
-} = require("../models/user");
+  missingBody,
+  wrongPasswordOrEmail,
+} = require("../utils/defaultResponses");
+const { getUserByEmail, createUser } = require("../models/user");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const dotenv = require("dotenv");
+dotenv.config();
 
-async function getById(req, res) {
-  const { userId } = req.params;
-  const user = await getUserById(userId);
+async function login(req, res) {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return missingBody(res);
+  }
 
+  const user = await getUserByEmail(email);
   if (!user) {
-    res
-      .status(404)
-      .json({ error: { message: `User with ID ${userId} does not exist` } });
-    return;
+    return wrongPasswordOrEmail(res);
   }
 
-  res.status(200).json({
-    user: user,
-  });
-}
-
-async function getAll(req, res) {
-  const users = await getAllUsers();
-  res.status(200).json({
-    users: users,
-  });
-}
-
-async function create(req, res) {
-  const { email, passwordHash, firstName, lastName } = req.body;
-
-  if (!email || !passwordHash || !firstName || !lastName) {
-    res.status(400).json({
-      error: { message: "Request body is missing arguments", code: 2 },
-    });
-    return;
+  const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
+  if (!isPasswordValid) {
+    return wrongPasswordOrEmail(res);
   }
 
-  const userEmailExists = await getUserByEmail(email);
-  if (userEmailExists) {
+  delete user.passwordHash;
+  const token = jwt.sign({ userEmail: user.email }, process.env.JWT_SECRET_KEY);
+  const loggedInUser = {
+    ...user,
+    token,
+  };
+  return res.status(200).json({ loggedInUser: loggedInUser });
+}
+
+async function register(req, res) {
+  const { email, password, firstName, lastName } = req.body;
+
+  if (!email || !password || !firstName || !lastName) {
+    return missingBody(res);
+  }
+
+  const emailExists = await getUserByEmail(email);
+  if (emailExists) {
     res.status(409).json({
       error: { message: "Account already exists" },
     });
     return;
   }
 
-  const userData = {
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = await createUser({
     email: email,
-    passwordHash: passwordHash,
+    passwordHash: hashedPassword,
     firstName: firstName,
     lastName: lastName,
-  };
-
-  const user = await createUser(userData);
+  });
   if (!user) {
     res.status(500).json({ error: { message: "An error occurred." } });
     return;
   }
 
-  res.status(201).json({ user: user });
+  const token = jwt.sign({ userEmail: user.email }, process.env.JWT_SECRET_KEY);
+  res.status(201).json({
+    createdUser: {
+      ...user,
+      token,
+    },
+  });
 }
 
 module.exports = {
-  getById,
-  getAll,
-  create,
+  login,
+  register,
 };

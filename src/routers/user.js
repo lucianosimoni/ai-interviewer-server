@@ -1,17 +1,13 @@
 const express = require("express");
-const { create, getAll, getById } = require("../controllers/user");
+const { login, register } = require("../controllers/user");
 const router = express.Router();
 
-router.get("/:userId", async (req, res) => {
-  await getById(req, res);
+router.post("/login", async (req, res) => {
+  await login(req, res);
 });
 
-router.get("/", async (req, res) => {
-  await getAll(req, res);
-});
-
-router.post("/", async (req, res) => {
-  await create(req, res);
+router.post("/register", async (req, res) => {
+  await register(req, res);
 });
 
 module.exports = router;

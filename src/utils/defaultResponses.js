@@ -16,8 +16,29 @@ function missingParams(res) {
   });
 }
 
+function wrongPasswordOrEmail(res) {
+  return res.status(400).json({
+    error: { message: "Email or Password is wrong." },
+  });
+}
+
+function missingAuth(res) {
+  return res.status(401).json({
+    error: { message: "Authorization header missing" },
+  });
+}
+
+function missingBearer(res) {
+  return res.status(401).json({
+    error: { message: "Bearer token missing" },
+  });
+}
+
 module.exports = {
   missingBody,
   missingQuery,
   missingParams,
+  wrongPasswordOrEmail,
+  missingAuth,
+  missingBearer,
 };
