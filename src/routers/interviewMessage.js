@@ -8,17 +8,17 @@ const router = express.Router();
 // 🟢 url is: /message"
 
 router.post("/", async (req, res) => {
-  create(req, res);
+  await create(req, res);
 });
 
 router.get("/", async (req, res) => {
   // 📦 Accepts QUERY interviewId and userId
-  getAll(req, res);
+  await getAll(req, res);
 });
 
 router.patch("/", async (req, res) => {
   // 📦 Accepts QUERY interviewId, userId and messageId
-  updateSummary(req, res);
+  await updateSummary(req, res);
 });
 
 module.exports = router;
