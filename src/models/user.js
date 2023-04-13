@@ -25,23 +25,38 @@ async function createUser(userData) {
 }
 
 async function getUserById(userId) {
-  userId = Number(userId);
-  return await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-  });
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.log("🌋 Something happened while trying to get the user by its id");
+    console.error(error);
+    return null;
+  }
 }
 
 async function getUserByEmail(userEmail) {
-  return await prisma.user.findUnique({
-    where: {
-      email: userEmail,
-    },
-    include: {
-      Profile: true,
-    },
-  });
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: userEmail,
+      },
+      include: {
+        Profile: true,
+      },
+    });
+    return user;
+  } catch (error) {
+    console.log(
+      "🌋 Something happened while trying to get the user by its email"
+    );
+    console.error(error);
+    return null;
+  }
 }
 
 module.exports = {
