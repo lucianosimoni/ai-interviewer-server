@@ -41,6 +41,7 @@ async function getUserById(userId) {
 
 async function getUserByEmail(userEmail) {
   try {
+    console.log(`Trying to get user by email. User email: ${userEmail}`);
     const user = await prisma.user.findUnique({
       where: {
         email: userEmail,
@@ -49,6 +50,9 @@ async function getUserByEmail(userEmail) {
         Profile: true,
       },
     });
+    console.log(
+      `✅ user await finished. user email returned is: ${user.email}`
+    );
     return user;
   } catch (error) {
     console.log(
