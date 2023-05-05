@@ -8,6 +8,13 @@ Create a real-time _software development_ **interview** on your browser, using a
   href="https://ai-interviewer-gh3q.onrender.com">👉 Check the Live version here 👈</a>
 </p>
 
+<a
+style="background-color:#bfd3c1; border-radius:20px; padding:0.5rem; color:#3d5a80; font-size:0.75rem; padding-right:1rem; font-weight:bold; text-decoration:none;"
+href="https://github.com/lucianosimoni/ai-interviewer-client"
+target="_blank">
+💻 Frontend GitHub
+</a>
+
 ## ✨ Features
 
 - Simulate a real-time Junior interview
