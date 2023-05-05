@@ -1,7 +1,7 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-async function createInterview({ userId, maxRound, level }) {
+export async function createInterview({ userId, maxRound, level }) {
   return await prisma.interview.create({
     data: {
       maxRound: maxRound,
@@ -21,7 +21,7 @@ async function createInterview({ userId, maxRound, level }) {
   });
 }
 
-async function getInterviewById(interviewId) {
+export async function getInterviewById(interviewId) {
   return await prisma.interview.findUnique({
     where: {
       id: Number(interviewId),
@@ -29,11 +29,11 @@ async function getInterviewById(interviewId) {
   });
 }
 
-async function getAllInterviews() {
+export async function getAllInterviews() {
   return await prisma.interview.findMany();
 }
 
-async function getInterviewsByUser(userId) {
+export async function getInterviewsByUser(userId) {
   return await prisma.interview.findMany({
     where: {
       user: {
@@ -45,10 +45,3 @@ async function getInterviewsByUser(userId) {
     },
   });
 }
-
-module.exports = {
-  createInterview,
-  getInterviewById,
-  getAllInterviews,
-  getInterviewsByUser,
-};

@@ -1,7 +1,7 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-async function createMessage({ userId, interviewId, message, author }) {
+export async function createMessage({ userId, interviewId, message, author }) {
   return await prisma.interviewMessage.create({
     data: {
       message: message,
@@ -15,7 +15,7 @@ async function createMessage({ userId, interviewId, message, author }) {
   });
 }
 
-async function getAllInterviewMessages({ interviewId }) {
+export async function getAllInterviewMessages({ interviewId }) {
   return await prisma.interviewMessage.findMany({
     where: {
       interviewId: interviewId,
@@ -23,7 +23,7 @@ async function getAllInterviewMessages({ interviewId }) {
   });
 }
 
-async function getMessageById(messageId) {
+export async function getMessageById(messageId) {
   return await prisma.interviewMessage.findUnique({
     where: {
       id: messageId,
@@ -31,7 +31,7 @@ async function getMessageById(messageId) {
   });
 }
 
-async function updateMessageSummaryId({ messageId, summaryId }) {
+export async function updateMessageSummaryId({ messageId, summaryId }) {
   return await prisma.interviewMessage.update({
     where: {
       id: messageId,
@@ -41,10 +41,3 @@ async function updateMessageSummaryId({ messageId, summaryId }) {
     },
   });
 }
-
-module.exports = {
-  createMessage,
-  getAllInterviewMessages,
-  getMessageById,
-  updateMessageSummaryId,
-};

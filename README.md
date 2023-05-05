@@ -1,29 +1,55 @@
-# Server - AI Interviewer
+# 🧠 AI Interviewer | Backend
 
-Hosted using [render](https://render.com/).
+Create a real-time _software development_ **interview** on your browser, using a custom trained LLM AI as your Interviewer.
 
-Live endpoint:
+<p align="center" style="padding:1rem;">
+  <a 
+  style="background-color: #84a59d; border-radius:20px; padding:1rem; color:#f7ede2; font-weight:bold; text-decoration:none;"
+  href="https://ai-interviewer-gh3q.onrender.com">👉 Check the Live version here 👈</a>
+</p>
 
-https://ai-interviewer.onrender.com
+## ✨ Features
 
-🧙‍♂️
+- Simulate a real-time Junior interview
+- Speech Recognition _(Whisper 🗣️)_
+- AI Model _(Custom Trained 🏋️)_
+- Interview organizer
+- Mobile friendly
 
-## 🚂 Run it locally
+---
+
+## ⚙️ Technologies Used
+
+- ### Frontend 💻
+
+  - React.js
+  - TailwindCSS
+  - Axios
+
+- ### Backend 👈(ﾟヮﾟ 👈)
+
+  - Node.js
+  - OpenAI
+  - PostgreSQL
+  - Prisma ORM
+  - Express.js
+
+---
+
+## 🚂 Getting Started
+
+To get started with the project, clone the repository and install the dependencies.
 
 _Install the dependencies_
 
 ```bash
- npm install
+npm install
 ```
 
 _Create the **.env** file_
 
-```env
-OPENAI_API_KEY="YOUR-API-KEY-HERE"
-DATABASE_URL="REPLACE?schema=prisma"
-SHADOW_DATABASE_URL="REPLACE?schema=shadow"
-FINE_TUNNED_MODEL="REPLACE"
-```
+- Duplicate the `.env.example`
+- Rename to `.env` and _fill it up_.
 
 _Start the application locally_
 
@@ -33,7 +59,7 @@ _Start the application locally_
 
 ---
 
-## 🪖 Prisma
+## 🪖 Using Prisma ORM
 
 _Creates migration and runs it against database_
 
@@ -60,10 +86,15 @@ npx prisma migrate reset
 ```json
 "dependencies": {
   "@prisma/client": "^4.11.0",
+  "bcrypt": "^5.1.0",
   "cors": "^2.8.5",
   "dotenv": "^16.0.3",
   "express": "^4.18.2",
-  "openai": "^3.1.0"
+  "form-data": "^4.0.0",
+  "graceful-fs": "^4.2.11",
+  "jsonwebtoken": "^9.0.0",
+  "multer": "^1.4.5-lts.1",
+  "openai": "^3.2.1"
 },
 "devDependencies": {
   "morgan": "^1.10.0",

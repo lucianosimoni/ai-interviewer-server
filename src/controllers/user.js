@@ -1,14 +1,14 @@
-const {
+import {
   missingBody,
   wrongPasswordOrEmail,
-} = require("../utils/defaultResponses");
-const { getUserByEmail, createUser } = require("../models/user");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const dotenv = require("dotenv");
+} from "../utils/defaultResponses.js";
+import { getUserByEmail, createUser } from "../models/user.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 dotenv.config();
 
-async function login(req, res) {
+export async function login(req, res) {
   const { email, password } = req.body;
   if (!email || !password) {
     return missingBody(res);
@@ -33,7 +33,7 @@ async function login(req, res) {
   return res.status(200).json({ loggedInUser: loggedInUser });
 }
 
-async function register(req, res) {
+export async function register(req, res) {
   const { email, password, firstName, lastName } = req.body;
 
   if (!email || !password || !firstName || !lastName) {
@@ -69,8 +69,3 @@ async function register(req, res) {
     },
   });
 }
-
-module.exports = {
-  login,
-  register,
-};

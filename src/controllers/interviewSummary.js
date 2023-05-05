@@ -1,13 +1,13 @@
-const { getInterviewById } = require("../models/interview");
-const {
+import { getInterviewById } from "../models/interview.js";
+import {
   getMessageById,
   updateMessageSummaryId,
-} = require("../models/interviewMessage");
-const { getUserById } = require("../models/user");
-const { missingBody } = require("../utils/defaultResponses");
-const { createSummary, getSummaryById } = require("../models/interviewSummary");
+} from "../models/interviewMessage.js";
+import { getUserById } from "../models/user.js";
+import { missingBody } from "../utils/defaultResponses.js";
+import { createSummary, getSummaryById } from "../models/interviewSummary.js";
 
-async function create(req, res) {
+export async function create(req, res) {
   const { userId, interviewId, summary, messagesId } = req.body;
   if (!userId || !interviewId || !summary || !messagesId) {
     return missingBody(res);
@@ -56,7 +56,7 @@ async function create(req, res) {
   return res.status(201).json({ createdSummary: createdSummary });
 }
 
-async function getById(req, res) {
+export async function getById(req, res) {
   const { summaryId } = req.params;
   if (!summaryId) {
     return missingBody(res);
@@ -71,8 +71,3 @@ async function getById(req, res) {
 
   return res.status(200).json({ interviewSummary: returnedSummary });
 }
-
-module.exports = {
-  create,
-  getById,
-};

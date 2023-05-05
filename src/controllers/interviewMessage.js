@@ -1,14 +1,14 @@
-const {
+import {
   createMessage,
   getAllInterviewMessages,
   getMessageById,
   updateMessageSummaryId,
-} = require("../models/interviewMessage.js");
-const { getInterviewById } = require("../models/interview.js");
-const { getSummaryById } = require("../models/interviewSummary.js");
-const { missingBody, missingQuery } = require("../utils/defaultResponses.js");
+} from "../models/interviewMessage.js";
+import { getInterviewById } from "../models/interview.js";
+import { getSummaryById } from "../models/interviewSummary.js";
+import { missingBody, missingQuery } from "../utils/defaultResponses.js";
 
-async function create(req, res) {
+export async function create(req, res) {
   const { message, author, userId, interviewId } = req.body;
   if (!message || !author || !userId || !interviewId) {
     return missingBody(res);
@@ -39,7 +39,7 @@ async function create(req, res) {
   });
 }
 
-async function getAll(req, res) {
+export async function getAll(req, res) {
   const { userId, interviewId } = req.query;
   if (!userId || !interviewId) {
     return missingQuery(res);
@@ -56,7 +56,7 @@ async function getAll(req, res) {
   return res.status(200).json({ allMessages: allMessages });
 }
 
-async function updateSummary(req, res) {
+export async function updateSummary(req, res) {
   const { userId, interviewId, messageId } = req.query;
   const { summaryId } = req.body;
 
@@ -101,9 +101,3 @@ async function updateSummary(req, res) {
 
   return res.status(201).json({ updateMessage: updatedMessage });
 }
-
-module.exports = {
-  create,
-  getAll,
-  updateSummary,
-};

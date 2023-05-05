@@ -1,11 +1,11 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   create,
   getAll,
   updateSummary,
-} = require("../controllers/interviewMessage.js");
+} from "../controllers/interviewMessage.js";
+
 const router = express.Router();
-// 🟢 url is: /message"
 
 router.post("/", async (req, res) => {
   await create(req, res);
@@ -21,4 +21,4 @@ router.patch("/", async (req, res) => {
   await updateSummary(req, res);
 });
 
-module.exports = router;
+export default router;

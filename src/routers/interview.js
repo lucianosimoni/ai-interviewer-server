@@ -1,10 +1,11 @@
-const express = require("express");
-const {
+import express from "express";
+import {
   create,
   getAll,
   getById,
   getByUser,
-} = require("../controllers/interview");
+} from "../controllers/interview.js";
+
 const router = express.Router();
 
 router.post("/", async (req, res) => {
@@ -23,4 +24,4 @@ router.get("/user/:userId", async (req, res) => {
   await getByUser(req, res);
 });
 
-module.exports = router;
+export default router;

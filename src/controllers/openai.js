@@ -1,12 +1,10 @@
-require("dotenv").config();
-const { Configuration, OpenAIApi } = require("openai");
+import fs from "graceful-fs";
+import dotenv from "dotenv";
+dotenv.config();
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openAi = new OpenAIApi(configuration);
+import OpenAIUtils from "../utils/OpenAI.js";
 
-async function generateResponse(req, res) {
+export async function generateResponse(req, res) {
   const { message } = req.body;
 
   if (!configuration.apiKey) {
@@ -64,10 +62,43 @@ async function generateResponse(req, res) {
     });
 }
 
-function createPrompt(message) {
-  return message.trim() + "->";
+export async function generateTextFromSpeech(req, res) {
+  if (!req.file) {
+    res.status(400).json({
+      error: {
+        message: "Request File is empty. Server can't process without data.",
+      },
+    });
+    return;
+  }
+
+  const filename = req.file.filename;
+
+  fs.renameSync(
+    `./public/data/uploads/${filename}`,
+    `./public/data/uploads/${filename}.mp3`
+  );
+
+  try {
+    const response = await OpenAIUtils.getTranscription(filename);
+    res.status(200).json({ transcription: response.data.text });
+    fs.unlinkSync(`./public/data/uploads/${filename}.mp3`); // 💥Delete audio
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+      fs.unlinkSync(`./public/data/uploads/${filename}.mp3`); // 💥Delete audio
+    } else {
+      res.status(500).json({
+        error: {
+          message: "An error occurred during your OpenAI request.",
+          data: error,
+        },
+      });
+      fs.unlinkSync(`./public/data/uploads/${filename}.mp3`); // 💥Delete audio
+    }
+  }
 }
 
-module.exports = {
-  generateResponse,
-};
+export function createPrompt(message) {
+  return message.trim() + "->";
+}

@@ -1,7 +1,7 @@
-const { PrismaClient } = require("@prisma/client");
+import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-async function createSummary({ summary, interviewId }) {
+export async function createSummary({ summary, interviewId }) {
   return await prisma.interviewSummary.create({
     data: {
       summary: summary,
@@ -14,7 +14,7 @@ async function createSummary({ summary, interviewId }) {
   });
 }
 
-async function getSummaryById(summaryId) {
+export async function getSummaryById(summaryId) {
   return await prisma.interviewSummary.findUnique({
     where: {
       id: summaryId,
@@ -24,8 +24,3 @@ async function getSummaryById(summaryId) {
     },
   });
 }
-
-module.exports = {
-  createSummary,
-  getSummaryById,
-};

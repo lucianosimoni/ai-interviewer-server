@@ -1,9 +1,17 @@
-const express = require("express");
-const { generateResponse } = require("../services/openai");
+import express from "express";
+import {
+  generateResponse,
+  generateTextFromSpeech,
+} from "../controllers/openai.js";
+
 const router = express.Router();
 
 router.post("/", async (req, res) => {
   await generateResponse(req, res);
 });
 
-module.exports = router;
+router.post("/speech-to-text", async (req, res) => {
+  await generateTextFromSpeech(req, res);
+});
+
+export default router;

@@ -1,9 +1,9 @@
-const jwt = require("jsonwebtoken");
-const { missingAuth, missingBearer } = require("../utils/defaultResponses");
-const dotenv = require("dotenv");
+import jwt from "jsonwebtoken";
+import { missingAuth, missingBearer } from "../utils/defaultResponses.js";
+import dotenv from "dotenv";
 dotenv.config();
 
-function authenticate(req, res, next) {
+export default function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return missingAuth(res);
@@ -22,5 +22,3 @@ function authenticate(req, res, next) {
     return res.status(401).json({ error: { message: "Invalid token" } });
   }
 }
-
-module.exports = authenticate;

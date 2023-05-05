@@ -1,3 +1,4 @@
 node_modules
 .env
 training-data.jsonl
+public

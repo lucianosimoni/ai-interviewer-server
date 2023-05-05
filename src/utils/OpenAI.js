@@ -1,0 +1,41 @@
+import { Configuration, OpenAIApi } from "openai";
+import FormData from "form-data";
+import fs from "graceful-fs";
+import dotenv from "dotenv";
+dotenv.config();
+
+export default class OpenAIUtils {
+  static configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+  static openAi = new OpenAIApi(this.configuration);
+
+  static async getCompletion() {
+    const response = await this.openAi.createCompletion({
+      model: process.env.FINE_TUNNED_MODEL,
+      prompt: createPrompt(message),
+      temperature: 0.8,
+      max_tokens: 80,
+      frequency_penalty: 1,
+      presence_penalty: 1,
+      stop: ["\n"],
+    });
+    return response.data.choices[0].text;
+  }
+
+  static async getTranscription(filename) {
+    try {
+      const response = await this.openAi.createTranscription(
+        fs.createReadStream(`./public/data/uploads/${filename}.mp3`),
+        process.env.WHISPER_MODEL
+      );
+      return response;
+    } catch (error) {
+      console.error(
+        "⚠️ An Error happened while getting Transcription.: ",
+        error
+      );
+      throw error;
+    }
+  }
+}

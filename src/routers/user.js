@@ -1,5 +1,6 @@
-const express = require("express");
-const { login, register } = require("../controllers/user");
+import express from "express";
+import { login, register } from "../controllers/user.js";
+
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
@@ -10,4 +11,4 @@ router.post("/register", async (req, res) => {
   await register(req, res);
 });
 
-module.exports = router;
+export default router;

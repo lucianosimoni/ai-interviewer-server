@@ -1,8 +1,8 @@
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-const { createNewSummary } = require("./database.js");
-const authenticate = require("./middleware/authenticate.js");
+import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+import multer from "multer";
+import authenticate from "./middleware/authenticate.js";
 
 const app = express();
 const port = 3000;
@@ -11,18 +11,22 @@ app.use(morgan("short"));
 app.use(express.json());
 // FIXME: Cors open to all endpoints - Not cool, right? - For dev only
 app.use(cors());
+// app.use(bodyParser.json({ limit: "50mb" }));
+// app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
-const userRouter = require("./routers/user.js");
-const interviewRouter = require("./routers/interview.js");
-const interviewMessageRouter = require("./routers/interviewMessage.js");
-const interviewSummaryRouter = require("./routers/interviewSummary.js");
-const openaiRouter = require("./routers/openai.js");
+const upload = multer({ dest: "./public/data/uploads/" });
+
+import userRouter from "./routers/user.js";
+import interviewRouter from "./routers/interview.js";
+import interviewMessageRouter from "./routers/interviewMessage.js";
+import interviewSummaryRouter from "./routers/interviewSummary.js";
+import openaiRouter from "./routers/openai.js";
 
 app.use("/user", userRouter);
 app.use("/interview", authenticate, interviewRouter);
 app.use("/interview-message", authenticate, interviewMessageRouter);
 app.use("/interview-summary", authenticate, interviewSummaryRouter);
-app.use("/openai", authenticate, openaiRouter);
+app.use("/openai", authenticate, upload.single("audioFile"), openaiRouter);
 
 // Basic back-end preview
 app.get("/", (req, res) => {
