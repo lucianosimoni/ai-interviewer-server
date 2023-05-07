@@ -16,11 +16,7 @@ export async function generateResponse(req, res) {
   }
 
   try {
-    console.log(
-      "🧠 Message received at the backend. Getting the res in the OpenAIUtils..."
-    );
     const response = await OpenAIUtils.getCompletion(message);
-    console.log("🧠🧠 Response is: ", response);
     // 💥🧠 End of Interviewer
     if (response.endsWith("<end-interview>")) {
       message = message.slice(0, -15);

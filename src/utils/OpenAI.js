@@ -20,10 +20,6 @@ export default class OpenAIUtils {
         presence_penalty: 1,
         stop: ["\n"],
       });
-      console.log(
-        "⚙️ Res returned from OpenAI official api. its data.choices[0].text is: ",
-        response.data.choices[0].text
-      );
       return response.data.choices[0].text;
     } catch (error) {
       console.error("⚠️ An Error happened while getting Completion: ", error);
