@@ -7,59 +7,43 @@ import OpenAIUtils from "../utils/OpenAI.js";
 export async function generateResponse(req, res) {
   const { message } = req.body;
 
-  if (!configuration.apiKey) {
-    res
-      .status(500)
-      .json({ error: { message: "OpenAI API key not configured." } });
-    return;
-  }
-
   if (!message || message.trim().length === 0) {
-    res.status(400).json({
+    return res.status(400).json({
       error: {
         message: "Message is empty. OpenAI can't process an Empty message",
       },
     });
-    return;
   }
 
-  await openAi
-    .createCompletion({
-      model: process.env.FINE_TUNNED_MODEL,
-      prompt: createPrompt(message),
-      temperature: 0.8,
-      max_tokens: 80,
-      frequency_penalty: 1,
-      presence_penalty: 1,
-      stop: ["\n"],
-    })
-    .then((response) => {
-      const message = response.data.choices[0].text;
-
-      if (message.endsWith("<end-interview>")) {
-        message = message.slice(0, -15);
-        res.status(200).json({
-          result: message,
-          interviewOver: true,
-        });
-        return;
-      }
-
-      res.status(200).json({ result: message, interviewOver: false });
-    })
-    .catch((error) => {
-      if (error.response) {
-        console.error(error.response.status, error.response.data);
-        res.status(error.response.status).json(error.response.data);
-      } else {
-        console.error(`Error with OpenAI API request: ${error.message}`);
-        res.status(500).json({
-          error: {
-            message: "An error occurred during your OpenAI request.",
-          },
-        });
-      }
-    });
+  try {
+    console.log(
+      "🧠 Message received at the backend. Getting the res in the OpenAIUtils..."
+    );
+    const response = await OpenAIUtils.getCompletion(message);
+    console.log("🧠🧠 Response is: ", response);
+    // 💥🧠 End of Interviewer
+    if (response.endsWith("<end-interview>")) {
+      message = message.slice(0, -15);
+      return res.status(200).json({
+        result: message,
+        interviewOver: true,
+      });
+    }
+    // 🟢🧠 Interview ok
+    res.status(200).json({ result: response, interviewOver: false });
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({
+        error: {
+          message:
+            "An error occurred during your OpenAI Completion (Interviewer Response) request.",
+          data: error,
+        },
+      });
+    }
+  }
 }
 
 export async function generateTextFromSpeech(req, res) {
@@ -97,8 +81,4 @@ export async function generateTextFromSpeech(req, res) {
       fs.unlinkSync(`./public/data/uploads/${filename}.mp3`); // 💥Delete audio
     }
   }
-}
-
-export function createPrompt(message) {
-  return message.trim() + "->";
 }

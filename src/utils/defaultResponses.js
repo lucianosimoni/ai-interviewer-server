@@ -17,7 +17,7 @@ export function missingParams(res) {
 }
 
 export function wrongPasswordOrEmail(res) {
-  return res.status(400).json({
+  return res.status(401).json({
     error: { message: "Email or Password is wrong." },
   });
 }
