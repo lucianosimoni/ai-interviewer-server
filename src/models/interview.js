@@ -45,3 +45,14 @@ export async function getInterviewsByUser(userId) {
     },
   });
 }
+
+export async function updateInterview(interviewId, newCurrentRound) {
+  return await prisma.interview.update({
+    where: {
+      id: Number(interviewId),
+    },
+    data: {
+      currentRound: newCurrentRound,
+    },
+  });
+}
