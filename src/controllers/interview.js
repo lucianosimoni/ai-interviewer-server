@@ -57,7 +57,7 @@ export async function getByUser(req, res) {
   }
 
   const userInterviews = await getInterviewsByUser(Number(userId));
-  if (!userInterviews) {
+  if (userInterviews.hasOwnProperty("error")) {
     return res
       .status(401)
       .json({ error: { message: "Unable to get user interviews." } });

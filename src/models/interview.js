@@ -34,6 +34,24 @@ export async function getAllInterviews() {
 }
 
 export async function getInterviewsByUser(userId) {
+  try {
+    const interviews = await prisma.interview.findMany({
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      include: {
+        interviewStats: true,
+      },
+    });
+    return interviews;
+  } catch (error) {
+    console.log(
+      "🔴 Error ocurred in the Backend while getting Interviews by User id"
+    );
+    return error;
+  }
   return await prisma.interview.findMany({
     where: {
       user: {

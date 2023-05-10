@@ -11,8 +11,6 @@ app.use(morgan("short"));
 app.use(express.json());
 // FIXME: Cors open to all endpoints - Not cool, right? - For dev only
 app.use(cors());
-// app.use(bodyParser.json({ limit: "50mb" }));
-// app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
 const upload = multer({ dest: "./public/data/uploads/" });
 
