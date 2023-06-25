@@ -36,6 +36,7 @@ target="_blank">
 - ### Backend 👈(ﾟヮﾟ 👈)
 
   - Node.js
+  - AWS Ubuntu EC2
   - OpenAI
   - PostgreSQL
   - Prisma ORM
