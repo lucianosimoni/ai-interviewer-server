@@ -1,24 +1,34 @@
+import dotenv from "dotenv";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import multer from "multer";
+
 import authenticate from "./middleware/authenticate.js";
-
-const app = express();
-const port = 3000;
-
-app.use(morgan("short"));
-app.use(express.json());
-// FIXME: Cors open to all endpoints - Not cool, right? - For dev only
-app.use(cors());
-
-const upload = multer({ dest: "./public/data/uploads/" });
-
 import userRouter from "./routers/user.js";
 import interviewRouter from "./routers/interview.js";
 import interviewMessageRouter from "./routers/interviewMessage.js";
 import interviewSummaryRouter from "./routers/interviewSummary.js";
 import openaiRouter from "./routers/openai.js";
+
+dotenv.config();
+
+const app = express();
+const port = 3000;
+
+const whitelist = process.env.WHITELIST.split(",");
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1) callback(null, true);
+    else callback(`🔴⚠️ Not allowed by CORS from origin: ${origin}`, false);
+  },
+};
+app.use(cors(corsOptions));
+
+app.use(morgan("dev"));
+app.use(express.json());
+
+const upload = multer({ dest: "./public/data/uploads/" });
 
 app.use("/user", userRouter);
 app.use("/interview", authenticate, interviewRouter);
