@@ -39,7 +39,12 @@ app.use("/openai", authenticate, upload.single("audioFile"), openaiRouter);
 // Basic back-end preview
 app.get("/", (req, res) => {
   res.send(
-    "<h1>Hello there! 🧙‍♂️</h1><a target='_blank' href='https://github.com/lucianosimoni/ai-interviewer-server'>GitHub</a><br/><a target='_blank' href='https://www.linkedin.com/in/luciano-simoni/'>LinkedIn</a>"
+    `<h1>Hello there! 🧙‍♂️</h1>
+    <a target='_blank' href='https://github.com/lucianosimoni/ai-interviewer-server'>GitHub</a>
+    <br/>
+    <a target='_blank' href='https://www.linkedin.com/in/luciano-simoni/'>LinkedIn</a>
+    <br/>
+    <a target='_blank' href='https://lucianosimoni.dev'>My portfolio</a>`
   );
 });
 
